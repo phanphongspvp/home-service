@@ -2,19 +2,22 @@ import { Image, Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import Color from "../../Utils/Color";
 import React from "react";
 import * as WebBrowser from "expo-web-browser";
+import { Button } from "react-native";
 import { useOAuth } from "@clerk/clerk-expo";
 import { useWarmUpBrowser } from "../../hooks/useWarmUpBrowser";
 
 WebBrowser.maybeCompleteAuthSession();
 
 export default function Login() {
+
   useWarmUpBrowser();
 
   const { startOAuthFlow } = useOAuth({ strategy: "oauth_google" });
 
   const onPress = React.useCallback(async () => {
     try {
-      const { createdSessionId, setActive } = await startOAuthFlow();
+      const { createdSessionId, signIn, signUp, setActive } =
+        await startOAuthFlow();
 
       if (createdSessionId) {
         setActive({ session: createdSessionId });
