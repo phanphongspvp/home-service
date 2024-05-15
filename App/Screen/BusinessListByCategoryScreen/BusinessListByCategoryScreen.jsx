@@ -1,21 +1,24 @@
-import React, { useEffect } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, Text, TouchableOpacity, FlatList } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import GlobalApi from "../../Utils/GlobalApi";
+import BusinessListItem from "./BusinessListItem";
 
 export default function BusinessListByCategoryScreen() {
   const param = useRoute().params;
   const navigation = useNavigation();
+
+  const [businessList, setBusinessList] = useState([]);
 
   useEffect(() => {
     getBusinessByCategory();
   }, [param]);
 
   const getBusinessByCategory = () => {
-    GlobalApi.getBusinessListByCategory(param.category).then((res) => {
-      console.log(res.data.businessLists);
-    });
+    GlobalApi.getBusinessListByCategory(param.category).then(res => {
+      setBusinessList(res.data.businessLists);
+    })
   };
 
   return (
@@ -34,6 +37,12 @@ export default function BusinessListByCategoryScreen() {
           {param?.category}
         </Text>
       </TouchableOpacity>
+      <FlatList
+        data={businessList}
+        renderItem={({item, index}) => (
+          <BusinessListItem business={item} />
+        )}
+      />
     </View>
   );
 }
