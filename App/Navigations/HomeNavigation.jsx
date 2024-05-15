@@ -3,6 +3,7 @@ import { Text, View } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import HomeScreen from "../Screen/HomeScreen/HomeScreen";
 import BusinessListByCategoryScreen from "../Screen/BusinessListByCategoryScreen/BusinessListByCategoryScreen";
+import BusinessDetailsScreen from "../Screen/BusinessDetailsScreen/BusinessDetailsScreen";
 
 const Stack = createStackNavigator();
 
@@ -13,6 +14,10 @@ export default function HomeNavigation() {
       <Stack.Screen
         name="BusinessList"
         component={BusinessListByCategoryScreen}
+      />
+      <Stack.Screen
+        name="BusinessListDetail"
+        component={BusinessDetailsScreen}
       />
     </Stack.Navigator>
   );

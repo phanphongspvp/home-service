@@ -4,6 +4,8 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import GlobalApi from "../../Utils/GlobalApi";
 import BusinessListItem from "./BusinessListItem";
+import Color from "../../Utils/Color";
+import PageHeading from "../../Components/PageHeading";
 
 export default function BusinessListByCategoryScreen() {
   const param = useRoute().params;
@@ -16,33 +18,33 @@ export default function BusinessListByCategoryScreen() {
   }, [param]);
 
   const getBusinessByCategory = () => {
-    GlobalApi.getBusinessListByCategory(param.category).then(res => {
+    GlobalApi.getBusinessListByCategory(param.category).then((res) => {
       setBusinessList(res.data.businessLists);
-    })
+    });
   };
 
   return (
     <View style={{ padding: 20, paddingTop: 30 }}>
-      <TouchableOpacity
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          alignItems: "center",
-          gap: 10,
-        }}
-        onPress={() => navigation.goBack()}
-      >
-        <Ionicons name="arrow-back-outline" size={30} color="black" />
-        <Text style={{ fontSize: 25, fontFamily: "outfit-medium" }}>
-          {param?.category}
+      <PageHeading title={param?.category} />
+      {businessList.length > 0 ? (
+        <FlatList
+          data={businessList}
+          style={{ marginTop: 15 }}
+          renderItem={({ item, index }) => <BusinessListItem business={item} />}
+        />
+      ) : (
+        <Text
+          style={{
+            fontFamily: "outfit-medium",
+            fontSize: 20,
+            textAlign: "center",
+            marginTop: "10%",
+            color: Color.GRAY,
+          }}
+        >
+          Hiện tại không có dịch vụ
         </Text>
-      </TouchableOpacity>
-      <FlatList
-        data={businessList}
-        renderItem={({item, index}) => (
-          <BusinessListItem business={item} />
-        )}
-      />
+      )}
     </View>
   );
 }
