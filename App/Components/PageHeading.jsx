@@ -1,8 +1,10 @@
 import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { useNavigation } from "@react-navigation/native";
 
 export default function PageHeading({ title }) {
+  const navigation = useNavigation();
   return (
     <TouchableOpacity
       style={{

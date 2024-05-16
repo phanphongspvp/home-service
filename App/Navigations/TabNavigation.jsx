@@ -1,5 +1,4 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import HomeScreen from "../Screen/HomeScreen/HomeScreen";
 import BookingScreen from "../Screen/BookingScreen/BookingScreen";
 import ProfileScreen from "../Screen/ProfileScreen/ProfileScreen";
 import { Text } from "react-native";
@@ -23,7 +22,7 @@ export default function TabNavigation() {
         options={{
           tabBarLabel: ({ color }) => (
             <Text style={{ color: color, fontSize: 12, marginTop: -7 }}>
-              Home
+              Trang chủ
             </Text>
           ),
           tabBarIcon: ({ color, size }) => (
@@ -37,7 +36,7 @@ export default function TabNavigation() {
         options={{
           tabBarLabel: ({ color }) => (
             <Text style={{ color: color, fontSize: 12, marginTop: -7 }}>
-              Profile
+              Đặt trước
             </Text>
           ),
           tabBarIcon: ({ color, size }) => (
@@ -51,7 +50,7 @@ export default function TabNavigation() {
         options={{
           tabBarLabel: ({ color }) => (
             <Text style={{ color: color, fontSize: 12, marginTop: -7 }}>
-              Profile
+              Trang cá nhân
             </Text>
           ),
           tabBarIcon: ({ color, size }) => (

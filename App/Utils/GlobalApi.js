@@ -91,9 +91,71 @@ const getBusinessListByCategory = async (category) => {
   return result;
 };
 
+const getUserBooking = async (userEmail) => {
+  const result = await client.query({
+    query:
+      gql`
+      query getUserBookings {
+        bookings(
+          orderBy: publishedAt_DESC
+          where: {userEmail: "${userEmail}"}
+        ) {
+          id
+          userName
+          userEmail
+          time
+          date
+          note
+          bookingStatus
+          businessList {
+            id
+            images {
+              url
+            }
+            name
+            address
+            contactPersion
+            email
+            about
+          }
+        }
+      }
+      `,
+  });
+  return result;
+};
+
+const createBooking = async (data) => {
+  const mutationQuery = await client.mutate({
+    mutation: gql`
+      mutation createBooking {
+        createBooking(
+          data: {
+            bookingStatus: Booked,
+            businessList: { connect: { id: "${data?.businessId}" } },
+            date: "${data?.date}",
+            time: "${data?.time}",
+            note: "${data?.note}",
+            userEmail: "${data?.userEmail}",
+            userName: "${data?.userName}"
+          }
+        ) {
+          id
+        }
+        publishManyBookings(to: PUBLISHED) {
+          count
+        }
+      }
+    `
+  });
+  return mutationQuery;
+}
+
 export default {
   getSlider,
   getCategory,
   getBusinessList,
   getBusinessListByCategory,
+  getUserBooking,
+  createBooking
 };
