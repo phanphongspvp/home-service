@@ -122,6 +122,7 @@ const getUserBooking = async (userEmail) => {
       }
       `,
   });
+  console.log(result);
   return result;
 };
 

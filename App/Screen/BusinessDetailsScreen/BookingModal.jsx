@@ -1,5 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, FlatList, TextInput, ScrollView, ToastAndroid } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  FlatList,
+  TextInput,
+  ScrollView,
+  ToastAndroid,
+} from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import CalendarPicker from "react-native-calendar-picker";
 import Color from "../../Utils/Color";
@@ -9,8 +18,8 @@ import { useUser } from "@clerk/clerk-expo";
 import moment from "moment";
 
 export default function BookingModal({ businessId, hiddenModal }) {
-
   const [timeList, setTimeList] = useState(null);
+  const [isCreated, setIsCreated] = useState(true);
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(Date.now());
   const [note, setNote] = useState("");
@@ -22,28 +31,28 @@ export default function BookingModal({ businessId, hiddenModal }) {
 
   const getTime = () => {
     const timeList = [];
-    for(let i = 8;i <= 12;i++) {
+    for (let i = 8; i <= 12; i++) {
       timeList.push({
-        time: i + ':00 AM'
-      })
+        time: i + ":00 AM",
+      });
       timeList.push({
-        time: i + ":30 AM"
-      })
+        time: i + ":30 AM",
+      });
     }
-    for(let i = 1;i <= 7;i++) {
+    for (let i = 1; i <= 7; i++) {
       timeList.push({
-        time: i + ':00 PM'
-      })
+        time: i + ":00 PM",
+      });
       timeList.push({
-        time: i + ":30 PM"
-      })
+        time: i + ":30 PM",
+      });
     }
     setTimeList(timeList);
-  }
+  };
 
   // Create Booking Method
   const createNewBooking = () => {
-    if(!selectedTime || !selectedDate) {
+    if (!selectedTime || !selectedDate) {
       ToastAndroid.show("Vui lòng chọn ngày và thời gian", ToastAndroid.LONG);
       return;
     }
@@ -51,18 +60,38 @@ export default function BookingModal({ businessId, hiddenModal }) {
       userName: user?.fullName,
       userEmail: user?.primaryEmailAddress?.emailAddress,
       time: selectedTime,
-      date: moment(selectedDate).format('DD-MM-yyyy'),
+      date: moment(selectedDate).format("DD-MM-yyyy"),
       note: note,
-      businessId: businessId
-    }
-    GlobalApi.createBooking(data).then(res => {
-      if(res?.data?.createBooking?.id) {
-        ToastAndroid.show("Đặt lịch thành công!", ToastAndroid.LONG);
-        hiddenModal();
+      businessId: businessId,
+    };
+
+    GlobalApi.getUserBooking(user?.primaryEmailAddress?.emailAddress).then(
+      (res) => {
+        const bookings = res.data.bookings;
+        if (bookings.length > 0) {
+          for (let i = 0; i < bookings.length; i++) {
+            if (bookings[i]?.businessList?.id === businessId) {
+              setIsCreated(false);
+              ToastAndroid.show(
+                "Bạn đã đặt lịch cho dịch vụ này rồi",
+                ToastAndroid.LONG
+              );
+              return;
+            }
+          }
+        }
+        if (isCreated) {
+          GlobalApi.createBooking(data).then(res => {
+            if(res?.data?.createBooking?.id) {
+              ToastAndroid.show("Đặt lịch thành công!", ToastAndroid.LONG);
+              hiddenModal();
+            }
+            return;
+          })
+        }
       }
-      return;
-    })
-  }
+    );
+  };
 
   return (
     <ScrollView>
@@ -73,7 +102,7 @@ export default function BookingModal({ businessId, hiddenModal }) {
             flexDirection: "row",
             alignItems: "center",
             gap: 10,
-            marginBottom: 20
+            marginBottom: 20,
           }}
           onPress={() => hiddenModal()}
         >
@@ -104,9 +133,20 @@ export default function BookingModal({ businessId, hiddenModal }) {
             data={timeList}
             horizontal={true}
             showsHorizontalScrollIndicator={false}
-            renderItem={({item, index}) => (
-              <TouchableOpacity style={{ marginRight: 10 }} onPress={() => setSelectedTime(item.time)}>
-                <Text style={[selectedTime == item.time ? styles.selectedTime : styles.unSelectedTime]}>{item.time}</Text>
+            renderItem={({ item, index }) => (
+              <TouchableOpacity
+                style={{ marginRight: 10 }}
+                onPress={() => setSelectedTime(item.time)}
+              >
+                <Text
+                  style={[
+                    selectedTime == item.time
+                      ? styles.selectedTime
+                      : styles.unSelectedTime,
+                  ]}
+                >
+                  {item.time}
+                </Text>
               </TouchableOpacity>
             )}
           />
@@ -126,7 +166,10 @@ export default function BookingModal({ businessId, hiddenModal }) {
         </View>
 
         {/* Confirmation Button */}
-        <TouchableOpacity style={{ marginTop: 15 }} onPress={() => createNewBooking()}>
+        <TouchableOpacity
+          style={{ marginTop: 15 }}
+          onPress={() => createNewBooking()}
+        >
           <Text style={styles.confirmBtn}>Xác nhận và đặt lịch</Text>
         </TouchableOpacity>
       </View>
@@ -138,7 +181,7 @@ const styles = StyleSheet.create({
   calenderContainer: {
     backgroundColor: Color.PRIMARY_LIGHT,
     padding: 20,
-    borderRadius: 15
+    borderRadius: 15,
   },
   selectedTime: {
     padding: 10,
@@ -147,7 +190,7 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     paddingHorizontal: 18,
     backgroundColor: Color.PRIMARY,
-    color: Color.WHITE
+    color: Color.WHITE,
   },
   unSelectedTime: {
     padding: 10,
@@ -155,7 +198,7 @@ const styles = StyleSheet.create({
     borderColor: Color.PRIMARY,
     borderRadius: 100,
     paddingHorizontal: 18,
-    color: Color.PRIMARY
+    color: Color.PRIMARY,
   },
   noteTextArea: {
     borderWidth: 1,
@@ -164,7 +207,7 @@ const styles = StyleSheet.create({
     padding: 20,
     fontSize: 16,
     fontFamily: "outfit",
-    borderColor: Color.PRIMARY
+    borderColor: Color.PRIMARY,
   },
   confirmBtn: {
     textAlign: "center",
@@ -174,6 +217,6 @@ const styles = StyleSheet.create({
     color: Color.WHITE,
     padding: 13,
     borderRadius: 100,
-    elevation: 2
-  }
-})
+    elevation: 2,
+  },
+});
