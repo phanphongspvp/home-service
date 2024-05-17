@@ -1,9 +1,9 @@
 import { Text, View, StyleSheet } from "react-native";
 
-export default function Heading({text, isViewAll=false}) {
+export default function Heading({text, isViewAll=false, color}) {
     return (
         <View style={styles.container}>
-            <Text style={styles.heading}>{text}</Text>
+            <Text style={[styles.heading, { color }]}>{text}</Text>
             {isViewAll && (<Text>Xem tất cả</Text>)}
         </View>
     )
@@ -19,6 +19,6 @@ const styles = StyleSheet.create({
     heading: {
         fontSize: 20,
         fontFamily: 'outfit-medium',
-        marginBottom: 10
+        marginBottom: 10,
     }
 });

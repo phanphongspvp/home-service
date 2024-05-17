@@ -6,7 +6,7 @@ import Color from "../../Utils/Color";
 export default function BusinessAboutMe({ business }) {
   const [isReadMore, setIsReadMore] = useState(false);
   return (
-    <View>
+    <View style={{ paddingHorizontal: 20 }}>
       <Heading text={"Thông tin"} />
       <Text
         style={{

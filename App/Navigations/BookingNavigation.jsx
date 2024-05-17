@@ -1,25 +1,20 @@
 import React from "react";
 import { Text, View } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
-import HomeScreen from "../Screen/HomeScreen/HomeScreen";
-import BusinessListByCategoryScreen from "../Screen/BusinessListByCategoryScreen/BusinessListByCategoryScreen";
+import BookingScreen from "../Screen/BookingScreen/BookingScreen";
 import BusinessDetailsScreen from "../Screen/BusinessDetailsScreen/BusinessDetailsScreen";
 
 const Stack = createStackNavigator();
 
-export default function HomeNavigation() {
+export default function BookingNavigation() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen
-        name="HomeMain"
-        component={HomeScreen}
+        name="BookingMain"
+        component={BookingScreen}
       />
       <Stack.Screen
-        name="BusinessList"
-        component={BusinessListByCategoryScreen}
-      />
-      <Stack.Screen
-        name="BusinessListDetail"
+        name="BookingDetail"
         component={BusinessDetailsScreen}
       />
     </Stack.Navigator>

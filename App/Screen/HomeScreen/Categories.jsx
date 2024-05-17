@@ -27,7 +27,7 @@ export default function Categories() {
   };
 
   return (
-    <View style={{ marginTop: 10 }}>
+    <View style={{ marginTop: 10, paddingHorizontal: 20 }}>
       <Heading text={"Danh mục"} isViewAll={true} />
       <FlatList
         data={categories}

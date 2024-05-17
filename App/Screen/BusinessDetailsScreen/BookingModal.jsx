@@ -12,7 +12,7 @@ export default function BookingModal({ businessId, hiddenModal }) {
 
   const [timeList, setTimeList] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
-  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(Date.now());
   const [note, setNote] = useState("");
   const { user } = useUser();
 
@@ -56,9 +56,11 @@ export default function BookingModal({ businessId, hiddenModal }) {
       businessId: businessId
     }
     GlobalApi.createBooking(data).then(res => {
-      console.log(res);
-      ToastAndroid.show("Đặt lịch thành công!", ToastAndroid.LONG);
-      hiddenModal();
+      if(res?.data?.createBooking?.id) {
+        ToastAndroid.show("Đặt lịch thành công!", ToastAndroid.LONG);
+        hiddenModal();
+      }
+      return;
     })
   }
 

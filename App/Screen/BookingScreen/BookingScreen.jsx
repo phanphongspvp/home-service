@@ -27,11 +27,12 @@ export default function BookingScreen() {
     }
 
     return (
-        <View style={{ padding: 20 }}>
+        <View style={{ padding: 20, paddingTop: 30 }}>
             <Heading text={"Danh sách đặt trước"} />
             <FlatList
                 data={bookingList}
                 onRefresh={() => getUserBookings()}
+                showsHorizontalScrollIndicator={false}
                 refreshing={loading}
                 renderItem={({item}) => (
                     <BusinessListItem

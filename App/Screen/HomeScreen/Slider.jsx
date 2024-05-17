@@ -18,7 +18,7 @@ export default function Slider() {
     }
 
     return (
-        <View>
+        <View style={{ paddingHorizontal: 20 }}>
             <Heading text={"Ưu đãi dành cho bạn"} />
             <FlatList
                 data={slider}

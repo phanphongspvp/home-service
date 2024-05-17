@@ -19,7 +19,7 @@ export default function BusinessList() {
     }
 
     return (
-        <View style={{ marginTop: 20 }}>
+        <View style={{ marginTop: 20, paddingHorizontal: 20 }}>
             <Heading text={"Kinh doanh mới nhất"} isViewAll={true} />
             <FlatList
                 data={businessList}
